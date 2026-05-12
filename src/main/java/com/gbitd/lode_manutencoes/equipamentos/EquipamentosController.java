@@ -45,12 +45,28 @@ public class EquipamentosController {
         }).orElse(ResponseEntity.notFound().build());
     }
 
-    @PatchMapping("/{id}/manutencao")
-    public ResponseEntity<Equipamento> registrarManutencao(@PathVariable Long id) {
-        return repository.findById(id).map(equipamento -> {
-            equipamento.setStatus("Manutenção Necessária");
-            return ResponseEntity.ok(repository.save(equipamento));
-        }).orElse(ResponseEntity.notFound().build());
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<Equipamento> atualizarStatus(
+            @PathVariable Long id,
+            @RequestParam String status
+    ) {
+
+        List<String> statusValidos = List.of(
+                "OPERACIONAL",
+                "MANUTENCAO_NECESSARIA",
+                "CRITICO"
+        );
+
+        if (!statusValidos.contains(status)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return repository.findById(id)
+                .map(equipamento -> {
+                    equipamento.setStatus(status);
+                    return ResponseEntity.ok(repository.save(equipamento));
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
