@@ -68,6 +68,7 @@ docker compose down -v
 | Método | Rota                                                | Descrição       |
 |--------|-----------------------------------------------------|-----------------|
 | GET    | `/api/equipamentos`                                 | Lista todos     |
+| GET    | `/api/equipamentos?page={pagina}&size={tamanho}`    | Lista paginada  |
 | POST   | `/api/equipamentos`                                 | Cria novo       |
 | PUT    | `/api/equipamentos/{id}`                            | Atualiza        |
 | PATCH  | `/api/equipamentos/{id}/status?status={novostatus}` | Atualiza status |
