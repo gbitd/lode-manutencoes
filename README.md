@@ -4,7 +4,7 @@ Sistema de gestão de equipamentos para manutenção de poços artesianos.
 
 ## Tecnologias
 
-- **Backend:** Java 21 + Spring Boot + Spring Data JPA + H2
+- **Backend:** Java 21 + Spring Boot + Spring Data JPA + PostgreSQL
 - **Frontend:** Vue 3 + Vite + Vue Router
 
 ## Pré-requisitos
