@@ -8,14 +8,21 @@ Sistema de gestão de equipamentos para manutenção de poços artesianos.
 - **Frontend:** Vue 3 + Vite + Vue Router
 
 ## Pré-requisitos
-
+ 
 - Java 21+
 - Node.js 18+
+- Docker e Docker Compose
 - Maven (ou use o `./mvnw` incluído no projeto)
 
 ## Executando o projeto
-
-O backend e o frontend precisam rodar simultaneamente, cada um em um terminal separado.
+ 
+O banco, o backend e o frontend precisam rodar simultaneamente.
+ 
+### Banco de dados (Docker)
+ 
+```bash
+docker compose up -d
+```
 
 ### Backend (Spring Boot)
 
@@ -39,17 +46,21 @@ Disponível em `http://localhost:5173`
 
 O projeto utiliza Spring Data JPA para abstrair ações de acesso e persistência em bancos de dados, permitindo assim
 o desacoplamento de um banco de dados específico.
-
-Por hora ele usa o banco de dados H2 em memória — nenhuma instalação necessária. Os dados são resetados a cada reinicialização do backend.
-
-As configurações padrão são as seguintes:
-
-
-| Campo    | Valor                      |
-|----------|----------------------------|
-| JDBC URL | `jdbc:h2:mem:equipamentosdb` |
-| Username | `sa`                       |
-| Password | *(vazio)*                  |
+ 
+Atualmente o projeto usa PostgreSQL via Docker. As credenciais padrão estão no `docker-compose.yml` e no `application.properties`:
+ 
+| Campo    | Valor                |
+|----------|----------------------|
+| Host     | `localhost:5432`     |
+| Database | `lode_manutencoes`   |
+| Username | `lode`               |
+| Password | `lode123`            |
+ 
+Os dados persistem entre reinicializações graças ao volume `lode_pgdata`. Para apagar tudo:
+ 
+```bash
+docker compose down -v
+```
 
 
 ## Endpoints principais
