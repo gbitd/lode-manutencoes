@@ -1,80 +1,60 @@
 package com.gbitd.lode_manutencoes.equipamentos;
 
-import com.gbitd.lode_manutencoes.equipamentos.Equipamento;
-import com.gbitd.lode_manutencoes.equipamentos.EquipamentosRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/equipamentos")
 public class EquipamentosController {
 
-    private final EquipamentosRepository repository;
+    private final EquipamentosService service;
 
-    public EquipamentosController(EquipamentosRepository repository) {
-        this.repository = repository;
+    public EquipamentosController(EquipamentosService service) {
+        this.service = service;
     }
 
     @GetMapping
     public List<Equipamento> listar() {
-        return repository.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Equipamento> buscarPorId(@PathVariable Long id) {
-        return repository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return service.listar();
     }
 
     @PostMapping
-    public Equipamento criar(@RequestBody Equipamento equipamento) {
-        return repository.save(equipamento);
+    public ResponseEntity<?> criar(@RequestBody Equipamento equipamento) {
+        try {
+            return ResponseEntity.ok(service.criar(equipamento));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Equipamento> atualizar(@PathVariable Long id, @RequestBody Equipamento dados) {
-        return repository.findById(id).map(equipamento -> {
-            equipamento.setNome(dados.getNome());
-            equipamento.setTipo(dados.getTipo());
-            equipamento.setDataInstalacao(dados.getDataInstalacao());
-            equipamento.setStatus(dados.getStatus());
-            return ResponseEntity.ok(repository.save(equipamento));
-        }).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Equipamento dados) {
+        try {
+            return ResponseEntity.ok(service.atualizar(id, dados));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<Equipamento> atualizarStatus(
-            @PathVariable Long id,
-            @RequestParam String status
-    ) {
-
-        List<String> statusValidos = List.of(
-                "OPERACIONAL",
-                "MANUTENCAO_NECESSARIA",
-                "CRITICO"
-        );
-
-        if (!statusValidos.contains(status)) {
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<?> atualizarStatus(@PathVariable Long id, @RequestParam String status) {
+        try {
+            return ResponseEntity.ok(service.atualizarStatus(id, status));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
         }
-
-        return repository.findById(id)
-                .map(equipamento -> {
-                    equipamento.setStatus(status);
-                    return ResponseEntity.ok(repository.save(equipamento));
-                })
-                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        if (!repository.existsById(id)) {
+        try {
+            service.deletar(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
-        repository.deleteById(id);
-        return ResponseEntity.noContent().build();
     }
 }
