@@ -1,8 +1,10 @@
 package com.gbitd.lode_manutencoes.equipamentos;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/equipamentos")
@@ -15,8 +17,10 @@ public class EquipamentosController {
     }
 
     @GetMapping
-    public List<Equipamento> listar() {
-        return service.listar();
+    public Page<Equipamento> listar(
+        @PageableDefault(size = 10, sort = "nome") Pageable pageable
+    ) {
+        return service.listar(pageable);
     }
 
     @PostMapping

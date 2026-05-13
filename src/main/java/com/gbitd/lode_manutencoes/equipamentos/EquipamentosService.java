@@ -1,6 +1,8 @@
 package com.gbitd.lode_manutencoes.equipamentos;
 
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @Service
@@ -18,8 +20,8 @@ public class EquipamentosService {
         this.repository = repository;
     }
 
-    public List<Equipamento> listar() {
-        return repository.findAll();
+    public Page<Equipamento> listar(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     public Equipamento criar(Equipamento equipamento) {

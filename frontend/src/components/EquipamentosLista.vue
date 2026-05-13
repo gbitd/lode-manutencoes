@@ -14,6 +14,9 @@ const equipamentoEditando = ref(null)
 const mostrarForm = ref(false)
 const erro = ref('')
 const filtroNome = ref('')
+const paginaAtual = ref(0)
+const totalPaginas = ref(0)
+const tamanhoPagina = 10
 
 const equipamentosFiltrados = computed(() => {
   const termo = filtroNome.value.toLowerCase()
@@ -30,10 +33,17 @@ const statusClasse = {
 
 async function carregar() {
   try {
-    equipamentos.value = await listarEquipamentos()
+    const data = await listarEquipamentos(paginaAtual.value, tamanhoPagina)
+    equipamentos.value = data.content
+    totalPaginas.value = data.totalPages
   } catch (e) {
     erro.value = e.message
   }
+}
+
+function irParaPagina(pagina) {
+  paginaAtual.value = pagina
+  carregar()
 }
 
 async function salvar(dados) {
@@ -146,6 +156,28 @@ onMounted(carregar)
       </tbody>
     </table>
 
+    <div v-if="totalPaginas > 1" class="paginacao">
+      <button
+        class="btn btn-sm"
+        :disabled="paginaAtual === 0"
+        @click="irParaPagina(paginaAtual - 1)"
+      >
+        ← Anterior
+      </button>
+
+      <span class="pagina-info">
+        {{ paginaAtual + 1 }} de {{ totalPaginas }}
+      </span>
+
+      <button
+        class="btn btn-sm"
+        :disabled="paginaAtual === totalPaginas - 1"
+        @click="irParaPagina(paginaAtual + 1)"
+      >
+        Próxima →
+      </button>
+    </div>
+
     <p v-else-if="!mostrarForm" class="msg-vazio">
       {{ filtroNome ? 'Nenhum equipamento encontrado.' : 'Nenhum equipamento cadastrado.' }}
     </p>
@@ -182,5 +214,18 @@ onMounted(carregar)
 .acoes {
   display: flex;
   gap: 6px;
+}
+
+.paginacao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 1.5rem;
+}
+
+.pagina-info {
+  font-size: 13px;
+  color: #888;
 }
 </style>
