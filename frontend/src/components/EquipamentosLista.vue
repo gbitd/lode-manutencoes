@@ -35,9 +35,14 @@ async function carregar() {
   }
 }
 
+let debounceTimer = null
+
 watch(filtroNome, () => {
-  paginaAtual.value = 0  // volta para a primeira página a cada nova busca
-  carregar()
+  clearTimeout(debounceTimer)
+  debounceTimer = setTimeout(() => {
+    paginaAtual.value = 0
+    carregar()
+  }, 400)
 })
 
 function irParaPagina(pagina) {
