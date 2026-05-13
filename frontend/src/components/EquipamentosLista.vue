@@ -54,7 +54,8 @@ async function salvar(dados) {
 async function alterarStatus(id, status) {
   try {
     await atualizarStatus(id, status)
-    await carregar()
+    const eq = equipamentos.value.find(e => e.id === id)
+    if (eq) eq.status = status
   } catch (e) {
     erro.value = e.message
   }
