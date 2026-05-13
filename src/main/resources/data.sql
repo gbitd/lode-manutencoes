@@ -1,0 +1,33 @@
+INSERT INTO equipamentos (nome, tipo, data_instalacao, status)
+    SELECT * FROM (VALUES
+        ('Bomba Submersível Principal', 'Bomba Submersível', DATE '2021-03-10', 'OPERACIONAL'),
+        ('Bomba Submersível Reserva', 'Bomba Submersível', DATE '2021-03-10', 'OPERACIONAL'),
+        ('Bomba Dosadora de Cloro', 'Bomba Dosadora', DATE '2022-06-15', 'MANUTENCAO_NECESSARIA'),
+        ('Bomba Booster de Pressão', 'Bomba Booster', DATE '2023-01-20', 'OPERACIONAL'),
+        ('Tubulação de Recalque Principal', 'Tubulação', DATE '2021-03-10', 'OPERACIONAL'),
+        ('Tubulação de Distribuição Norte', 'Tubulação', DATE '2021-05-18', 'MANUTENCAO_NECESSARIA'),
+        ('Tubulação de Distribuição Sul', 'Tubulação', DATE '2021-05-18', 'CRITICO'),
+        ('Tubulação de Bypass', 'Tubulação', DATE '2022-09-07', 'OPERACIONAL'),
+        ('Painel de Controle da Bomba Principal', 'Painel Elétrico', DATE '2021-03-10', 'OPERACIONAL'),
+        ('Painel de Automação', 'Painel Elétrico', DATE '2022-11-30', 'OPERACIONAL'),
+        ('Painel de Comando da Dosagem', 'Painel Elétrico', DATE '2022-06-15', 'MANUTENCAO_NECESSARIA'),
+        ('Sensor de Nível do Poço', 'Sensor de Nível', DATE '2021-04-01', 'OPERACIONAL'),
+        ('Sensor de Pressão da Tubulação', 'Sensor de Pressão', DATE '2022-02-14', 'OPERACIONAL'),
+        ('Sensor de Vazão', 'Sensor de Vazão', DATE '2022-08-22', 'CRITICO'),
+        ('Sensor de Cloro Residual', 'Sensor de Qualidade', DATE '2023-03-05', 'OPERACIONAL'),
+        ('Reservatório Elevado 01', 'Reservatório', DATE '2020-11-10', 'MANUTENCAO_NECESSARIA'),
+        ('Reservatório Semi-enterrado', 'Reservatório', DATE '2020-11-10', 'OPERACIONAL'),
+        ('Válvula de Retenção Principal', 'Válvula', DATE '2021-03-10', 'OPERACIONAL'),
+        ('Válvula Reguladora de Pressão', 'Válvula', DATE '2022-05-19', 'CRITICO'),
+        ('Válvula de Alívio', 'Válvula', DATE '2021-07-30', 'OPERACIONAL'),
+        ('Filtro de Areia', 'Filtro', DATE '2021-06-12', 'OPERACIONAL'),
+        ('Filtro de Carvão Ativado', 'Filtro', DATE '2022-04-08', 'MANUTENCAO_NECESSARIA'),
+        ('Clorador Automático', 'Clorador', DATE '2022-06-15', 'OPERACIONAL'),
+        ('Medidor de Vazão Ultrassônico', 'Medidor', DATE '2023-07-11', 'OPERACIONAL'),
+        ('Gerador de Emergência', 'Gerador', DATE '2021-03-10', 'MANUTENCAO_NECESSARIA'),
+        ('Quadro de Proteção Elétrica', 'Quadro Elétrico', DATE '2021-03-10', 'OPERACIONAL'),
+        ('Tampa Sanitária do Poço', 'Proteção', DATE '2021-03-10', 'CRITICO'),
+        ('Cerca de Proteção do Poço', 'Proteção', DATE '2021-03-10', 'OPERACIONAL'),
+        ('Sistema de Telemetria', 'Telemetria', DATE '2023-09-01', 'OPERACIONAL')
+    ) AS dados(nome, tipo, data_instalacao, status)
+    WHERE NOT EXISTS (SELECT 1 FROM equipamentos LIMIT 1);
