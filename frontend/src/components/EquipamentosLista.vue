@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import {
   listarEquipamentos,
   deletarEquipamento,
@@ -18,12 +18,6 @@ const paginaAtual = ref(0)
 const totalPaginas = ref(0)
 const tamanhoPagina = 10
 
-const equipamentosFiltrados = computed(() => {
-  const termo = filtroNome.value.toLowerCase()
-  return equipamentos.value.filter(eq =>
-    eq.nome.toLowerCase().includes(termo)
-  )
-})
 
 const statusClasse = {
   OPERACIONAL: 'badge-operacional',
@@ -33,13 +27,18 @@ const statusClasse = {
 
 async function carregar() {
   try {
-    const data = await listarEquipamentos(paginaAtual.value, tamanhoPagina)
+    const data = await listarEquipamentos(paginaAtual.value, tamanhoPagina, filtroNome.value)
     equipamentos.value = data.content
     totalPaginas.value = data.totalPages
   } catch (e) {
     erro.value = e.message
   }
 }
+
+watch(filtroNome, () => {
+  paginaAtual.value = 0  // volta para a primeira página a cada nova busca
+  carregar()
+})
 
 function irParaPagina(pagina) {
   paginaAtual.value = pagina
@@ -119,7 +118,7 @@ onMounted(carregar)
       />
     </div>
 
-    <table v-if="equipamentosFiltrados.length">
+    <table v-if="equipamentos.length">
       <thead>
         <tr>
           <th>Nome</th>
@@ -130,7 +129,7 @@ onMounted(carregar)
         </tr>
       </thead>
       <tbody>
-        <tr v-for="eq in equipamentosFiltrados" :key="eq.id">
+        <tr v-for="eq in equipamentos" :key="eq.id">
           <td>{{ eq.nome }}</td>
           <td class="td-muted">{{ eq.tipo }}</td>
           <td class="td-muted">{{ eq.dataInstalacao }}</td>
@@ -156,6 +155,11 @@ onMounted(carregar)
       </tbody>
     </table>
 
+    <p v-if="!equipamentos.length && !mostrarForm" class="msg-vazio">
+      {{ filtroNome ? 'Nenhum equipamento encontrado.' : 'Nenhum equipamento cadastrado.' }}
+    </p>
+
+
     <div v-if="totalPaginas > 1" class="paginacao">
       <button
         class="btn btn-sm"
@@ -177,11 +181,6 @@ onMounted(carregar)
         Próxima →
       </button>
     </div>
-
-    <p v-else-if="!mostrarForm" class="msg-vazio">
-      {{ filtroNome ? 'Nenhum equipamento encontrado.' : 'Nenhum equipamento cadastrado.' }}
-    </p>
-
   </div>
 </template>
 

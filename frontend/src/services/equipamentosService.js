@@ -1,7 +1,9 @@
 const BASE_URL = '/api/equipamentos'
 
-export async function listarEquipamentos(page = 0, size = 10) {
-  const response = await fetch(BASE_URL + `?page=${page}&size=${size}`)
+export async function listarEquipamentos(page = 0, size = 10, nome = '') {
+  const params = new URLSearchParams({ page, size })
+  if (nome) params.append('nome', nome)
+  const response = await fetch(`/api/equipamentos?${params}`)
   if (!response.ok) throw new Error('Erro ao listar equipamentos')
   return response.json()
 }

@@ -20,8 +20,11 @@ public class EquipamentosService {
         this.repository = repository;
     }
 
-    public Page<Equipamento> listar(Pageable pageable) {
-        return repository.findAll(pageable);
+    public Page<Equipamento> listar(String nome, Pageable pageable) {
+        if (nome == null || nome.isBlank()) {
+            return repository.findAll(pageable);
+        }
+        return repository.findByNome(nome, pageable);
     }
 
     public Equipamento criar(Equipamento equipamento) {

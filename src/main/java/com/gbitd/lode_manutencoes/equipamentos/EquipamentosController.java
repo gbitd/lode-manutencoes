@@ -18,9 +18,10 @@ public class EquipamentosController {
 
     @GetMapping
     public Page<Equipamento> listar(
+        @RequestParam(required = false, defaultValue = "") String nome,
         @PageableDefault(size = 10, sort = "nome") Pageable pageable
     ) {
-        return service.listar(pageable);
+        return service.listar(nome, pageable);
     }
 
     @PostMapping
