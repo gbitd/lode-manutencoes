@@ -165,106 +165,17 @@ onMounted(carregar)
   margin-bottom: 1.5rem;
 }
 
-h1 { font-size: 1.5rem; font-weight: 600; }
-
-.btn-novo {
-  background: #1a1a1a;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
 .filtro-wrap {
   position: relative;
   margin-bottom: 1.25rem;
 }
 
-.filtro-icon {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 14px;
-}
-
 .filtro-input {
-  width: 100%;
-  padding: 8px 12px 8px 32px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 14px;
+  padding-left: 32px;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
+.acoes {
+  display: flex;
+  gap: 6px;
 }
-
-th {
-  text-align: left;
-  padding: 10px 12px;
-  color: #666;
-  font-weight: 500;
-  border-bottom: 1px solid #eee;
-  font-size: 13px;
-}
-
-td {
-  padding: 12px;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-/* Badges de status */
-.badge {
-  display: inline-block;
-  padding: 3px 10px;
-  border-radius: 99px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.badge-operacional {
-  background: #EAF3DE;
-  color: #27500A;
-}
-
-.badge-manutencao {
-  background: #FAEEDA;
-  color: #633806;
-}
-
-.badge-critico {
-  background: #FCEBEB;
-  color: #791F1F;
-}
-
-/* Botões de ação */
-.acoes { display: flex; gap: 6px; }
-
-.btn-action {
-  border: 1px solid #ddd;
-  background: transparent;
-  border-radius: 6px;
-  padding: 4px 10px;
-  font-size: 12px;
-  cursor: pointer;
-  color: #555;
-}
-
-.btn-manutencao {
-  border-color: #EF9F27;
-  color: #854F0B;
-}
-
-.btn-remover {
-  border-color: #F09595;
-  color: #A32D2D;
-}
-
-.erro { color: #A32D2D; margin-bottom: 1rem; }
-.vazio { color: #888; margin-top: 1rem; }
 </style>
