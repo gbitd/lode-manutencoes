@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: lode-postgres
+    environment:
+      POSTGRES_DB: lode_manutencoes
+      POSTGRES_USER: lode
+      POSTGRES_PASSWORD: lode123
+    ports:
+      - "5432:5432"
+    volumes:
+      - lode_pgdata:/var/lib/postgresql/data
+
+volumes:
+  lode_pgdata:
